@@ -49,6 +49,12 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 - [ ] Timeout and fail-safe logic
 - [ ] Final demo
 
+## Demo
+
+### ADC Test
+
+![ADC output](images/adc_teraterm_output.png)
+
 ## Notes
 
 The initial UART test was verified using direct register-level code.
