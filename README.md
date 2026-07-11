@@ -42,7 +42,7 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 - [x] HAL-based UART output
 - [x] ADC input reading using potentiometer
 - [x] ADC value output through UART
-- [ ] Convert ADC value to pedal percentage
+- [x] Convert ADC value to pedal percentage
 - [ ] PWM LED control
 - [ ] CAN transmit
 - [ ] CAN receive
