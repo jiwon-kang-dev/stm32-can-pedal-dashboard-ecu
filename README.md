@@ -38,7 +38,11 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 
 - [x] STM32 LED Blink
 - [x] USART2 UART output to PC using ST-LINK Virtual COM Port
-- [ ] ADC input reading
+- [x] Register-level UART test
+- [x] HAL-based UART output
+- [x] ADC input reading using potentiometer
+- [x] ADC value output through UART
+- [ ] Convert ADC value to pedal percentage
 - [ ] PWM LED control
 - [ ] CAN transmit
 - [ ] CAN receive
