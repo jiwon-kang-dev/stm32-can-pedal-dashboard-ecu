@@ -70,3 +70,13 @@ ADC: 1212
 
 - Convert ADC value from 0~4095 to 0~100%
 - Control LED brightness using PWM
+
+## Test Evidence
+
+### Wiring
+
+![ADC potentiometer wiring](../images/adc_potentiometer_wiring.jpg)
+
+### Tera Term Output
+
+![ADC output](../images/adc_teraterm_output.png)
