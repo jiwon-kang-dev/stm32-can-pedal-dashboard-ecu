@@ -43,7 +43,7 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 - [x] ADC input reading using potentiometer
 - [x] ADC value output through UART
 - [x] Convert ADC value to pedal percentage
-- [ ] PWM LED control
+- [x] PWM LED control
 - [ ] CAN transmit
 - [ ] CAN receive
 - [ ] Timeout and fail-safe logic
