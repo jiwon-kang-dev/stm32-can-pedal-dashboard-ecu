@@ -90,15 +90,15 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ### CAN Pedal Transmission Test
 
-![CAN TX Pedal Output](images/05_can_tx_pedal_output.png)
+![CAN TX Tera Term Output](images/05_can_tx_teraterm_output.png.png)
 
-![CAN RX Dashboard Output](images/05_can_rx_dashboard_output.png)
+![CAN RX Tera Term Output](images/05_can_rx_teraterm_output.png.png)
 
 ### CAN Bus Wiring
 
-![CAN Bus Wiring Top View](images/05_can_bus_wiring_top_view.jpg)
+![CAN Wiring Top View](images/05_can_wiring_top_view.jpg.jpg)
 
-![CAN Bus Wiring Side View](images/05_can_bus_wiring_side_view.jpg)
+![CAN Wiring Side View](images/05_can_wiring_side_view.jpg.jpg)
 
 ---
 
