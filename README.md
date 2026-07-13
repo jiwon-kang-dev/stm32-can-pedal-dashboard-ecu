@@ -2,10 +2,13 @@
 
 ## Project Overview
 
-This project aims to implement a CAN-based ECU simulator using two STM32 Nucleo-F446RE boards.
+This project implements a CAN-based ECU simulator using two STM32 Nucleo-F446RE boards.
 
-One board will act as a Pedal ECU, reading an analog pedal input using ADC.
-The other board will act as a Dashboard ECU, receiving pedal data through CAN and controlling LED output.
+One board acts as a Pedal ECU, reading an analog pedal input using ADC and transmitting the pedal percentage over CAN.
+
+The other board acts as a Dashboard ECU, receiving pedal data through CAN and printing the received value through UART. Later, the Dashboard ECU will control LED output based on the received pedal value.
+
+---
 
 ## Hardware
 
@@ -17,12 +20,16 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 - Breadboard and jumper wires
 - Logic Analyzer
 
+---
+
 ## Development Environment
 
 - STM32CubeIDE
 - STM32CubeMX
 - Tera Term
 - Windows
+
+---
 
 ## Features
 
@@ -34,6 +41,8 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 - Fail-safe LED behavior
 - Non-blocking super loop structure
 
+---
+
 ## Current Progress
 
 - [x] STM32 LED Blink
@@ -44,10 +53,34 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 - [x] ADC value output through UART
 - [x] Convert ADC value to pedal percentage
 - [x] PWM LED control
-- [ ] CAN transmit
-- [ ] CAN receive
+- [x] CAN transmit
+- [x] CAN receive
+- [x] Transmit ADC-based pedal percentage over CAN
+- [x] Receive CAN pedal data and print it through UART
+- [ ] Dashboard PWM control using received CAN data
 - [ ] Timeout and fail-safe logic
 - [ ] Final demo
+
+---
+
+## CAN Communication Summary
+
+The Pedal ECU reads the potentiometer value through ADC and converts it into a pedal percentage from 0 to 100%.
+
+The pedal percentage is transmitted through CAN using standard CAN ID `0x100`.
+
+```text
+CAN ID: 0x100
+DLC: 1 byte
+Data[0]: Pedal percentage, 0~100
+CAN1_TX: PB9
+CAN1_RX: PB8
+Bitrate: 500 kbps
+```
+
+The Dashboard ECU receives the CAN frame and prints the received pedal value through UART.
+
+---
 
 ## Demo
 
@@ -55,7 +88,36 @@ The other board will act as a Dashboard ECU, receiving pedal data through CAN an
 
 ![ADC output](images/adc_teraterm_output.png)
 
+### CAN Pedal Transmission Test
+
+![CAN TX Pedal Output](images/05_can_tx_pedal_output.png)
+
+![CAN RX Dashboard Output](images/05_can_rx_dashboard_output.png)
+
+### CAN Bus Wiring
+
+![CAN Bus Wiring Top View](images/05_can_bus_wiring_top_view.jpg)
+
+![CAN Bus Wiring Side View](images/05_can_bus_wiring_side_view.jpg)
+
+---
+
+## Development Notes
+
+- [UART Register Test](notes/01_uart_register_test.md)
+- [UART ADC HAL Test](notes/02_uart_adc_hal_test.md)
+- [ADC to Pedal Percent](notes/03_adc_to_pedal_percent.md)
+- [PWM LED Control](notes/04_pwm_led_control.md)
+- [CAN Pedal Value Transmission Test](notes/05_can_pedal_value_transmission.md)
+
+---
+
 ## Notes
 
 The initial UART test was verified using direct register-level code.
-The STM32 successfully transmitted "Hello STM32" to Tera Term via USART2.
+
+The STM32 successfully transmitted `"Hello STM32"` to Tera Term via USART2.
+
+The CAN communication test was successfully verified after moving the CAN TX/RX wires to the correct PB8/PB9 Morpho connector pins.
+
+The Pedal ECU successfully transmitted ADC-based pedal percentage data over CAN, and the Dashboard ECU successfully received the CAN frame and printed the received value through UART.
