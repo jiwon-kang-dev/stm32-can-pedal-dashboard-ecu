@@ -45,6 +45,8 @@
 
 CAN_HandleTypeDef hcan1;
 
+TIM_HandleTypeDef htim2;
+
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -58,6 +60,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_CAN1_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -98,6 +101,7 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN1_Init();
   MX_USART2_UART_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   CAN_FilterTypeDef canfilterconfig;
 
@@ -115,12 +119,14 @@ int main(void)
   HAL_CAN_ConfigFilter(&hcan1, &canfilterconfig);
   HAL_CAN_Start(&hcan1);
 
-  snprintf(msg, sizeof(msg), "Dashboard ECU CAN RX Start\r\n");
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+
+  snprintf(msg, sizeof(msg), "Dashboard ECU CAN RX PWM Start\r\n");
   HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
   /* USER CODE END 2 */
 
   /* Initialize leds */
-  BSP_LED_Init(LED2);
+  //BSP_LED_Init(LED2);
 
   /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
   BSP_PB_Init(BUTTON_USER, BUTTON_MODE_EXTI);
@@ -133,22 +139,35 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-    if (HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0)
-    {
-      HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &RxHeader, RxData);
+	  if (HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0)
+	  {
+	    HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &RxHeader, RxData);
 
-      if (RxHeader.StdId == 0x100 && RxHeader.DLC >= 1)
-      {
-        snprintf(msg, sizeof(msg), "RX ID: 0x%03lX, Pedal: %d\r\n",
-                 (unsigned long)RxHeader.StdId,
-                 RxData[0]);
+	    if (RxHeader.StdId == 0x100 && RxHeader.DLC >= 1)
+	    {
+	      uint8_t pedal_percent = RxData[0];
+	      uint32_t pwm_duty = 0;
 
-        HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
-      }
-    }
+	      if (pedal_percent > 100)
+	      {
+	        pedal_percent = 100;
+	      }
 
-    /* USER CODE END 3 */
-  }
+	      pwm_duty = (pedal_percent * 999) / 100;
+
+	      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm_duty);
+
+	      snprintf(msg, sizeof(msg), "RX ID: 0x%03lX, Pedal: %d%%, PWM: %lu\r\n",
+	               (unsigned long)RxHeader.StdId,
+	               pedal_percent,
+	               (unsigned long)pwm_duty);
+
+	      HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+	    }
+	  }
+
+  /* USER CODE END 3 */
+}
 }
 
 /**
@@ -232,6 +251,55 @@ static void MX_CAN1_Init(void)
   /* USER CODE BEGIN CAN1_Init 2 */
 
   /* USER CODE END CAN1_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 83;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 999;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+  HAL_TIM_MspPostInit(&htim2);
 
 }
 
