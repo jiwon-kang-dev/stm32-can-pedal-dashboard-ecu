@@ -103,9 +103,9 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ### Dashboard PWM Control Test
 
-![CAN TX Pedal PWM Output](images/06_can_tx_pedal_pwm_output.png)
+![CAN TX Pedal PWM Output](images/06_can_tx_pedal_pwm_output.png.png)
 
-![Dashboard PWM Output](images/06_dashboard_pwm_output.png)
+![Dashboard PWM Output](images/06_dashboard_pwm_output.png.png)
 
 ![Dashboard LED Brightness Low](images/06_dashboard_led_brightness_low.jpg.jpg)
 
