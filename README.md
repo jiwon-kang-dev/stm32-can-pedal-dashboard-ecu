@@ -57,7 +57,8 @@ The other board acts as a Dashboard ECU, receiving pedal data through CAN and pr
 - [x] CAN receive
 - [x] Transmit ADC-based pedal percentage over CAN
 - [x] Receive CAN pedal data and print it through UART
-- [ ] Dashboard PWM control using received CAN data
+- [x] Dashboard PWM control using received CAN data
+- [x] Control Dashboard ECU LD2 brightness using received pedal data
 - [ ] Timeout and fail-safe logic
 - [ ] Final demo
 
@@ -100,6 +101,16 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ![CAN Wiring Side View](images/05_can_wiring_side_view.jpg.jpg)
 
+### Dashboard PWM Control Test
+
+![CAN TX Pedal PWM Output](images/06_can_tx_pedal_pwm_output.png)
+
+![Dashboard PWM Output](images/06_dashboard_pwm_output.png)
+
+![Dashboard LED Brightness Low](images/06_dashboard_led_brightness_low.jpg)
+
+![Dashboard LED Brightness High](images/06_dashboard_led_brightness_high.jpg)
+
 ---
 
 ## Development Notes
@@ -109,6 +120,7 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 - [ADC to Pedal Percent](notes/03_adc_to_pedal_percent.md)
 - [PWM LED Control](notes/04_pwm_led_control.md)
 - [CAN Pedal Value Transmission Test](notes/05_can_pedal_value_transmission.md)
+- [Dashboard PWM Control Using Received CAN Data](notes/06_dashboard_pwm_control.md)
 
 ---
 
