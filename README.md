@@ -107,9 +107,9 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ![Dashboard PWM Output](images/06_dashboard_pwm_output.png)
 
-![Dashboard LED Brightness Low](images/06_dashboard_led_brightness_low.jpg)
+![Dashboard LED Brightness Low](images/06_dashboard_led_brightness_low.jpg.jpg)
 
-![Dashboard LED Brightness High](images/06_dashboard_led_brightness_high.jpg)
+![Dashboard LED Brightness High](images/06_dashboard_led_brightness_high.jpg.jpg)
 
 ---
 
