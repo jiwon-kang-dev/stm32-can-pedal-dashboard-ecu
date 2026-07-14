@@ -59,7 +59,10 @@ The other board acts as a Dashboard ECU, receiving pedal data through CAN and pr
 - [x] Receive CAN pedal data and print it through UART
 - [x] Dashboard PWM control using received CAN data
 - [x] Control Dashboard ECU LD2 brightness using received pedal data
-- [ ] Timeout and fail-safe logic
+- [x] Timeout and fail-safe logic
+- [x] CAN timeout detection after message loss
+- [x] Fail-safe LED OFF behavior on CAN timeout
+- [x] CAN restored detection after communication recovery
 - [ ] Final demo
 
 ---
@@ -111,6 +114,16 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ![Dashboard LED Brightness High](images/06_dashboard_led_brightness_high.jpg.jpg)
 
+### CAN Timeout and Fail-safe Test
+
+![CAN Timeout Fail-safe Output](images/07_timeout_failsafe_output.png)
+
+![Fail-safe LED OFF](images/07_failsafe_led_off.jpg)
+
+![CAN Restored Output](images/07_can_restored_output.png)
+
+[Timeout Fail-safe Demo Video](images/07_timeout_failsafe_demo.mp4)
+
 ---
 
 ## Development Notes
@@ -121,6 +134,7 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 - [PWM LED Control](notes/04_pwm_led_control.md)
 - [CAN Pedal Value Transmission Test](notes/05_can_pedal_value_transmission.md)
 - [Dashboard PWM Control Using Received CAN Data](notes/06_dashboard_pwm_control.md)
+- [CAN Timeout and Fail-safe Test](notes/07_can_timeout_failsafe.md)
 
 ---
 
