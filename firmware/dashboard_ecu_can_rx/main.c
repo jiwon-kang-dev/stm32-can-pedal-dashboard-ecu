@@ -53,6 +53,9 @@ UART_HandleTypeDef huart2;
 CAN_RxHeaderTypeDef RxHeader;
 uint8_t RxData[8];
 char msg[100];
+
+uint32_t lastRxTime = 0;
+uint8_t timeoutFlag = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -123,6 +126,8 @@ int main(void)
 
   snprintf(msg, sizeof(msg), "Dashboard ECU CAN RX PWM Start\r\n");
   HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+
+  lastRxTime = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Initialize leds */
@@ -148,13 +153,28 @@ int main(void)
 	      uint8_t pedal_percent = RxData[0];
 	      uint32_t pwm_duty = 0;
 
+	      /* CAN message received, so update last receive time */
+	      lastRxTime = HAL_GetTick();
+
+	      /* If the system was in timeout state, restore it */
+	      if (timeoutFlag == 1)
+	      {
+	        timeoutFlag = 0;
+
+	        snprintf(msg, sizeof(msg), "CAN Restored\r\n");
+	        HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+	      }
+
+	      /* Limit pedal value to 100% */
 	      if (pedal_percent > 100)
 	      {
 	        pedal_percent = 100;
 	      }
 
+	      /* Convert pedal percentage to PWM duty */
 	      pwm_duty = (pedal_percent * 999) / 100;
 
+	      /* Update LED brightness */
 	      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm_duty);
 
 	      snprintf(msg, sizeof(msg), "RX ID: 0x%03lX, Pedal: %d%%, PWM: %lu\r\n",
@@ -162,6 +182,21 @@ int main(void)
 	               pedal_percent,
 	               (unsigned long)pwm_duty);
 
+	      HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+	    }
+	  }
+
+	  /* Timeout check */
+	  if ((HAL_GetTick() - lastRxTime) > 1000)
+	  {
+	    if (timeoutFlag == 0)
+	    {
+	      timeoutFlag = 1;
+
+	      /* Fail-safe: turn off LED */
+	      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+
+	      snprintf(msg, sizeof(msg), "CAN Timeout - Fail Safe Active\r\n");
 	      HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
 	    }
 	  }
