@@ -112,6 +112,18 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ---
 
+## Firmware
+
+- [UART Register Test](firmware/uart_register_test/main.c)
+
+- [Pedal ECU CAN TX Firmware](firmware/pedal_ecu_can_tx/main.c)
+- [Pedal ECU CAN TX CubeMX Configuration](firmware/pedal_ecu_can_tx/pedal_ecu_can_tx.ioc)
+
+- [Dashboard ECU CAN RX Firmware](firmware/dashboard_ecu_can_rx/main.c)
+- [Dashboard ECU CAN RX CubeMX Configuration](firmware/dashboard_ecu_can_rx/dashboard_ecu_can_rx.ioc)
+
+---
+
 ## Notes
 
 The initial UART test was verified using direct register-level code.
