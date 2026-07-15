@@ -63,6 +63,8 @@ The other board acts as a Dashboard ECU, receiving pedal data through CAN and pr
 - [x] CAN timeout detection after message loss
 - [x] Fail-safe LED OFF behavior on CAN timeout
 - [x] CAN restored detection after communication recovery
+- [x] Non-blocking CAN transmission using HAL_GetTick
+- [x] Removed HAL_Delay from Pedal ECU transmit loop
 - [ ] Final demo
 
 ---
@@ -135,6 +137,7 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 - [CAN Pedal Value Transmission Test](notes/05_can_pedal_value_transmission.md)
 - [Dashboard PWM Control Using Received CAN Data](notes/06_dashboard_pwm_control.md)
 - [CAN Timeout and Fail-safe Test](notes/07_can_timeout_failsafe.md)
+- [Non-blocking Pedal ECU CAN Transmission](notes/08_non_blocking_pedal_tx.md)
 
 ---
 
