@@ -116,7 +116,7 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 ### CAN Timeout and Fail-safe Test
 
-![CAN Timeout Fail-safe Output](images/07_timeout_failsafe_output.png)
+![CAN Timeout Fail-safe Output](images/07_timeout_failsafe_output.png.png)
 
 ![Fail-safe LED OFF](images/07_failsafe_led_off.jpg)
 
