@@ -32,7 +32,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define PEDAL_CAN_ID 0x100
+#define CAN_TIMEOUT_MS 1000
+#define PWM_MAX_DUTY 999
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -144,19 +146,22 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+	  uint32_t currentTime = HAL_GetTick();
+
+	  /* Check received CAN message */
 	  if (HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0)
 	  {
 	    HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &RxHeader, RxData);
 
-	    if (RxHeader.StdId == 0x100 && RxHeader.DLC >= 1)
+	    if (RxHeader.StdId == PEDAL_CAN_ID && RxHeader.DLC >= 1)
 	    {
 	      uint8_t pedal_percent = RxData[0];
 	      uint32_t pwm_duty = 0;
 
-	      /* CAN message received, so update last receive time */
-	      lastRxTime = HAL_GetTick();
+	      /* Update last CAN receive time */
+	      lastRxTime = currentTime;
 
-	      /* If the system was in timeout state, restore it */
+	      /* If CAN was in timeout state, restore normal state */
 	      if (timeoutFlag == 1)
 	      {
 	        timeoutFlag = 0;
@@ -165,16 +170,16 @@ int main(void)
 	        HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
 	      }
 
-	      /* Limit pedal value to 100% */
+	      /* Limit pedal value */
 	      if (pedal_percent > 100)
 	      {
 	        pedal_percent = 100;
 	      }
 
 	      /* Convert pedal percentage to PWM duty */
-	      pwm_duty = (pedal_percent * 999) / 100;
+	      pwm_duty = (pedal_percent * PWM_MAX_DUTY) / 100;
 
-	      /* Update LED brightness */
+	      /* Update Dashboard LED brightness */
 	      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm_duty);
 
 	      snprintf(msg, sizeof(msg), "RX ID: 0x%03lX, Pedal: %d%%, PWM: %lu\r\n",
@@ -186,14 +191,14 @@ int main(void)
 	    }
 	  }
 
-	  /* Timeout check */
-	  if ((HAL_GetTick() - lastRxTime) > 1000)
+	  /* CAN timeout check */
+	  if ((currentTime - lastRxTime) > CAN_TIMEOUT_MS)
 	  {
 	    if (timeoutFlag == 0)
 	    {
 	      timeoutFlag = 1;
 
-	      /* Fail-safe: turn off LED */
+	      /* Fail-safe: turn off Dashboard LED */
 	      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 
 	      snprintf(msg, sizeof(msg), "CAN Timeout - Fail Safe Active\r\n");
