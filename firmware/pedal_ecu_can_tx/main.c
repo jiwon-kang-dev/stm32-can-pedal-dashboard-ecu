@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define PEDAL_TX_PERIOD_MS 100
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -54,6 +54,7 @@ CAN_TxHeaderTypeDef TxHeader;
 uint8_t TxData[8];
 uint32_t TxMailbox;
 char msg[100];
+uint32_t lastTxTime = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,6 +125,8 @@ int main(void)
 
   snprintf(msg, sizeof(msg), "Pedal ECU CAN TX Start\r\n");
   HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+
+  lastTxTime = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Initialize leds */
@@ -140,12 +143,18 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  uint32_t adc_value = 0;
+	  uint32_t currentTime = HAL_GetTick();
+
+	  if ((currentTime - lastTxTime) >= PEDAL_TX_PERIOD_MS)
+	  {
+	    lastTxTime = currentTime;
+
+	    uint32_t adc_value = 0;
 	    uint32_t pedal_percent = 0;
 
 	    HAL_ADC_Start(&hadc1);
 
-	    if (HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK)
+	    if (HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
 	    {
 	      adc_value = HAL_ADC_GetValue(&hadc1);
 	      pedal_percent = (adc_value * 100) / 4095;
@@ -171,8 +180,7 @@ int main(void)
 	    }
 
 	    HAL_ADC_Stop(&hadc1);
-
-	    HAL_Delay(100);
+	  }
 
     /* USER CODE END 3 */
    }
