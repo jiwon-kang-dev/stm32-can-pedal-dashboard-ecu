@@ -113,7 +113,7 @@ When CAN communication was restored, the Dashboard ECU returned to normal PWM co
 
 ### Fail-safe LED OFF
 
-![Fail-safe LED OFF](../images/07_failsafe_led_off.jpg)
+![Fail-safe LED OFF](../images/07_failsafe_led_off.png)
 
 ### CAN Restored
 
