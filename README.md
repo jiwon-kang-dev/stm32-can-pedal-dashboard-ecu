@@ -68,6 +68,10 @@ The other board acts as a Dashboard ECU, receiving pedal data through CAN and pr
 - [x] Non-blocking Dashboard ECU receive loop
 - [x] CAN timeout check using HAL_GetTick
 - [x] Refactored CAN ID, timeout, and PWM values using define
+- [x] Logic analyzer CAN TXD waveform verification
+- [x] Pedal ECU TXD and Dashboard ECU RXD comparison
+- [x] Verified approximately 100 ms CAN transmission period
+- [x] Decoded CAN ID 0x100, DLC 1, and pedal data
 - [ ] Final demo
 
 ---
@@ -129,6 +133,20 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 
 [Timeout Fail-safe Demo Video](images/07_timeout_failsafe_demo.mp4)
 
+### Logic Analyzer Verification
+
+#### CAN TXD and RXD Comparison
+
+![CAN TXD and RXD Comparison](images/10_logic_analyzer_tx_rx_comparison.png)
+
+#### CAN Transmission Period
+
+![CAN Transmission Period](images/10_logic_analyzer_can_period.png)
+
+#### CAN Frame Decode
+
+![CAN Frame Decode](images/10_logic_analyzer_can_decode.png)
+
 ---
 
 ## Development Notes
@@ -142,6 +160,7 @@ The Dashboard ECU receives the CAN frame and prints the received pedal value thr
 - [CAN Timeout and Fail-safe Test](notes/07_can_timeout_failsafe.md)
 - [Non-blocking Pedal ECU CAN Transmission](notes/08_non_blocking_pedal_tx.md)
 - [Non-blocking Dashboard ECU Receive and Timeout Loop](notes/09_non_blocking_dashboard_rx.md)
+- [CAN Logic Analyzer Verification](notes/10_logic_analyzer_verification.md)
 
 ---
 
