@@ -231,12 +231,15 @@ The logic analyzer decoded CAN ID `0x100`, DLC `1`, and the pedal-position paylo
 
 ---
 
-## Notes
+## Technical Challenges and Solutions
 
-The initial UART test was verified using direct register-level code.
+| Challenge | Cause | Solution |
+|---|---|---|
+| CAN messages were not transmitted successfully | CAN TX/RX wires were connected to the wrong header pins | Moved the CAN connections to PB9 TX and PB8 RX on the Morpho connector |
+| CAN communication was unstable | Incomplete bus wiring and termination | Connected a common ground and installed 120 Ω termination resistors at both ends of the CAN bus |
+| Periodic transmission blocked other processing | The transmit loop used `HAL_Delay()` | Replaced the blocking delay with a `HAL_GetTick()`-based 100 ms scheduler |
+| Dashboard output could retain stale pedal data | No communication-loss handling was implemented | Added a 1000 ms timeout and forced PWM duty to zero during the fail-safe state |
+| Hardware behavior was difficult to confirm using UART alone | UART logs could not prove the physical CAN timing and frame contents | Measured TXD/RXD signals and decoded CAN ID, DLC, payload, and transmission period using a logic analyzer |
+| The logic analyzer was not initially recognized correctly | An incompatible USB driver was installed | Installed the WinUSB driver and configured the FX2-based device in PulseView |
 
-The STM32 successfully transmitted `"Hello STM32"` to Tera Term via USART2.
-
-The CAN communication test was successfully verified after moving the CAN TX/RX wires to the correct PB8/PB9 Morpho connector pins.
-
-The Pedal ECU successfully transmitted ADC-based pedal percentage data over CAN, and the Dashboard ECU successfully received the CAN frame and printed the received value through UART.
+---
