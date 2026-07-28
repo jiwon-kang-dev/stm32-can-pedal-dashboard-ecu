@@ -243,3 +243,16 @@ The logic analyzer decoded CAN ID `0x100`, DLC `1`, and the pedal-position paylo
 | The logic analyzer was not initially recognized correctly | An incompatible USB driver was installed | Installed the WinUSB driver and configured the FX2-based device in PulseView |
 
 ---
+
+## Limitations and Future Improvements
+
+- Replace polling-based CAN reception with interrupt-driven reception
+- Add CAN error monitoring and automatic bus-off recovery
+- Define additional CAN messages and organize signals using a DBC-style specification
+- Add filtering and plausibility checks for the analog pedal input
+- Separate peripheral drivers, application logic, and fail-safe state management into independent modules
+- Add diagnostic information such as error status and communication state
+- Extend the system using an RTOS with periodic tasks and event-based processing
+- Implement automotive diagnostic communication such as UDS in a future version
+
+---
