@@ -1,12 +1,16 @@
-# STM32 CAN Pedal-Dashboard ECU Simulator
+# STM32 CAN Pedal–Dashboard ECU Simulator
+
+A two-node embedded system that reads a simulated accelerator-pedal input, transmits the pedal position over CAN, controls a dashboard LED using PWM, and activates fail-safe behavior when communication is lost.
 
 ## Project Overview
 
-This project implements a CAN-based ECU simulator using two STM32 Nucleo-F446RE boards.
+This project simulates a basic automotive in-vehicle communication system using two STM32 Nucleo-F446RE boards.
 
-One board acts as a Pedal ECU, reading an analog pedal input using ADC and transmitting the pedal percentage over CAN.
+The **Pedal ECU** reads an analog pedal input through ADC, converts the measured value into a pedal percentage from 0% to 100%, and transmits the result periodically over CAN.
 
-The other board acts as a Dashboard ECU, receiving pedal data through CAN and printing the received value through UART. Later, the Dashboard ECU will control LED output based on the received pedal value.
+The **Dashboard ECU** receives the pedal message, controls the onboard LED brightness through PWM, detects CAN communication timeout, and forces the LED output to zero as a fail-safe action.
+
+When CAN communication is restored, the Dashboard ECU automatically returns to normal operation.
 
 ---
 
