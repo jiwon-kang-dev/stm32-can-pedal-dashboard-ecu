@@ -50,6 +50,27 @@ When CAN communication is restored, the Dashboard ECU automatically returns to n
 
 ---
 
+## System Architecture
+
+```mermaid
+flowchart LR
+    POT[10 kΩ Potentiometer] -->|Analog voltage| PEDAL[Pedal ECU<br/>STM32F446RE]
+    PEDAL -->|ADC 0–4095| SCALE[Pedal Position<br/>0–100%]
+    SCALE -->|CAN ID 0x100<br/>100 ms period| BUS[CAN Bus<br/>500 kbps]
+    BUS --> DASH[Dashboard ECU<br/>STM32F446RE]
+    DASH -->|Pedal % to PWM duty| LED[Dashboard LD2]
+    DASH -->|No valid frame for 1 s| SAFE[Fail-safe<br/>PWM = 0]
+```
+
+### ECU Responsibilities
+
+| ECU | Input | Processing | Output |
+|---|---|---|---|
+| Pedal ECU | Potentiometer through ADC | Converts the 12-bit ADC value into a pedal percentage and transmits it periodically | CAN message `0x100` |
+| Dashboard ECU | CAN message `0x100` | Validates the pedal data, calculates PWM duty, and monitors communication timeout | LD2 brightness, UART logs, and fail-safe output |
+
+---
+
 ## Current Progress
 
 - [x] STM32 LED Blink
