@@ -256,3 +256,15 @@ The logic analyzer decoded CAN ID `0x100`, DLC `1`, and the pedal-position paylo
 - Implement automotive diagnostic communication such as UDS in a future version
 
 ---
+
+## What I Learned
+
+- Configured and integrated STM32 ADC, UART, PWM, and CAN peripherals
+- Designed a simple application-layer CAN message for pedal-position data
+- Separated system responsibilities between a Pedal ECU and a Dashboard ECU
+- Implemented non-blocking periodic processing using `HAL_GetTick()`
+- Implemented communication timeout detection, fail-safe output, and automatic recovery
+- Understood CAN physical-layer requirements including transceivers, common ground, and termination resistors
+- Diagnosed CAN communication problems through wiring checks and UART debugging
+- Verified real hardware behavior using logic-analyzer timing measurements and CAN frame decoding
+- Organized firmware, configuration files, verification evidence, and development records in GitHub
