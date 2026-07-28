@@ -137,13 +137,48 @@ When a valid CAN message is received again, the fail-safe state is cleared and n
 
 ---
 
-## Demo
+## Demo and Evidence
 
-### ADC Test
+### CAN Timeout and Fail-safe
 
-![ADC output](images/adc_teraterm_output.png)
+The Dashboard ECU detects communication loss after 1000 ms, forces the PWM duty to zero, and automatically resumes normal operation when CAN communication is restored.
 
-### CAN Pedal Transmission Test
+![CAN Timeout Fail-safe Output](images/07_timeout_failsafe_output.png.png)
+
+![Fail-safe LED OFF](images/07_failsafe_led_off.png)
+
+![CAN Restored Output](images/07_can_restored_output.png)
+
+[Watch the timeout and fail-safe demo video](images/07_timeout_failsafe_demo.mp4)
+
+### Logic Analyzer Verification
+
+The physical CAN signals were measured at the Pedal ECU transmitter TXD and Dashboard ECU receiver RXD.
+
+#### TXD and RXD Comparison
+
+![CAN TXD and RXD Comparison](images/10_logic_analyzer_tx_rx_comparison.png)
+
+#### Transmission Period
+
+The measured interval between consecutive CAN frames was approximately 100 ms.
+
+![CAN Transmission Period](images/10_logic_analyzer_can_period.png)
+
+#### CAN Frame Decode
+
+The logic analyzer decoded CAN ID `0x100`, DLC `1`, and the pedal-position payload.
+
+![CAN Frame Decode](images/10_logic_analyzer_can_decode.png)
+
+<details>
+<summary><strong>Additional Development Evidence</strong></summary>
+
+### ADC Pedal Input
+
+![ADC Output](images/adc_teraterm_output.png)
+
+### CAN Transmission and Reception
 
 ![CAN TX Tera Term Output](images/05_can_tx_teraterm_output.png.png)
 
@@ -155,7 +190,7 @@ When a valid CAN message is received again, the fail-safe state is cleared and n
 
 ![CAN Wiring Side View](images/05_can_wiring_side_view.jpg.jpg)
 
-### Dashboard PWM Control Test
+### Dashboard PWM Control
 
 ![CAN TX Pedal PWM Output](images/06_can_tx_pedal_pwm_output.png)
 
@@ -165,29 +200,7 @@ When a valid CAN message is received again, the fail-safe state is cleared and n
 
 ![Dashboard LED Brightness High](images/06_dashboard_led_brightness_high.jpg.jpg)
 
-### CAN Timeout and Fail-safe Test
-
-![CAN Timeout Fail-safe Output](images/07_timeout_failsafe_output.png.png)
-
-![Fail-safe LED OFF](images/07_failsafe_led_off.png)
-
-![CAN Restored Output](images/07_can_restored_output.png)
-
-[Timeout Fail-safe Demo Video](images/07_timeout_failsafe_demo.mp4)
-
-### Logic Analyzer Verification
-
-#### CAN TXD and RXD Comparison
-
-![CAN TXD and RXD Comparison](images/10_logic_analyzer_tx_rx_comparison.png)
-
-#### CAN Transmission Period
-
-![CAN Transmission Period](images/10_logic_analyzer_can_period.png)
-
-#### CAN Frame Decode
-
-![CAN Frame Decode](images/10_logic_analyzer_can_decode.png)
+</details>
 
 ---
 
