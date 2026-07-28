@@ -145,7 +145,7 @@ The Pedal ECU reads the potentiometer input, converts it into a pedal percentage
 
 The Dashboard ECU controls the onboard LED brightness according to the received pedal position. The demo also shows communication timeout detection, fail-safe LED OFF behavior, and automatic recovery after CAN communication is restored.
 
-[Watch the final integrated system demo](images/07_timeout_failsafe_demo.mp4)
+[Watch the final integrated system demo](images/07_timeout_failsafe_demo.mp4.mp4)
 
 #### Fail-safe Evidence
 
