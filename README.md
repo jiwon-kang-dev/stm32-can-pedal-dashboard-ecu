@@ -82,7 +82,7 @@ flowchart LR
 - [x] Automatic recovery after CAN communication is restored
 - [x] Non-blocking periodic processing using `HAL_GetTick()`
 - [x] CAN waveform, transmission period, and frame verified using a logic analyzer
-- [ ] Final integrated system demo
+- [x] Final integrated system demo
 
 ---
 
@@ -139,17 +139,21 @@ When a valid CAN message is received again, the fail-safe state is cleared and n
 
 ## Demo and Evidence
 
-### CAN Timeout and Fail-safe
+### Final Integrated System Demo
 
-The Dashboard ECU detects communication loss after 1000 ms, forces the PWM duty to zero, and automatically resumes normal operation when CAN communication is restored.
+The Pedal ECU reads the potentiometer input, converts it into a pedal percentage, and transmits the value to the Dashboard ECU through CAN.
+
+The Dashboard ECU controls the onboard LED brightness according to the received pedal position. The demo also shows communication timeout detection, fail-safe LED OFF behavior, and automatic recovery after CAN communication is restored.
+
+[Watch the final integrated system demo](images/07_timeout_failsafe_demo.mp4)
+
+#### Fail-safe Evidence
 
 ![CAN Timeout Fail-safe Output](images/07_timeout_failsafe_output.png.png)
 
 ![Fail-safe LED OFF](images/07_failsafe_led_off.png)
 
 ![CAN Restored Output](images/07_can_restored_output.png)
-
-[Watch the timeout and fail-safe demo video](images/07_timeout_failsafe_demo.mp4)
 
 ### Logic Analyzer Verification
 
