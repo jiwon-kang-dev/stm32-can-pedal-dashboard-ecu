@@ -35,15 +35,18 @@ When CAN communication is restored, the Dashboard ECU automatically returns to n
 
 ---
 
-## Features
+## Project Highlights
 
-- UART debug output
-- ADC pedal input reading
-- PWM LED control
-- CAN message transmission and reception
-- Timeout detection
-- Fail-safe LED behavior
-- Non-blocking super loop structure
+- Two STM32 Nucleo-F446RE boards operating as independent ECUs
+- Analog pedal input measured using a 12-bit ADC
+- Pedal position converted into a percentage from 0% to 100%
+- Standard CAN communication at 500 kbps
+- Pedal message transmitted every 100 ms
+- Dashboard LED brightness controlled using PWM
+- CAN timeout detection after 1 second without a valid message
+- Fail-safe LED OFF behavior and automatic recovery
+- Non-blocking super-loop structure using `HAL_GetTick()`
+- CAN frame and transmission period verified using a logic analyzer
 
 ---
 
