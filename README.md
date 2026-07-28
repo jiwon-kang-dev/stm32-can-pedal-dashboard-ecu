@@ -71,36 +71,18 @@ flowchart LR
 
 ---
 
-## Current Progress
+## Implementation Status
 
-- [x] STM32 LED Blink
-- [x] USART2 UART output to PC using ST-LINK Virtual COM Port
-- [x] Register-level UART test
-- [x] HAL-based UART output
-- [x] ADC input reading using potentiometer
-- [x] ADC value output through UART
-- [x] Convert ADC value to pedal percentage
-- [x] PWM LED control
-- [x] CAN transmit
-- [x] CAN receive
-- [x] Transmit ADC-based pedal percentage over CAN
-- [x] Receive CAN pedal data and print it through UART
-- [x] Dashboard PWM control using received CAN data
-- [x] Control Dashboard ECU LD2 brightness using received pedal data
-- [x] Timeout and fail-safe logic
-- [x] CAN timeout detection after message loss
-- [x] Fail-safe LED OFF behavior on CAN timeout
-- [x] CAN restored detection after communication recovery
-- [x] Non-blocking CAN transmission using HAL_GetTick
-- [x] Removed HAL_Delay from Pedal ECU transmit loop
-- [x] Non-blocking Dashboard ECU receive loop
-- [x] CAN timeout check using HAL_GetTick
-- [x] Refactored CAN ID, timeout, and PWM values using define
-- [x] Logic analyzer CAN TXD waveform verification
-- [x] Pedal ECU TXD and Dashboard ECU RXD comparison
-- [x] Verified approximately 100 ms CAN transmission period
-- [x] Decoded CAN ID 0x100, DLC 1, and pedal data
-- [ ] Final demo
+- [x] UART debugging using register-level code and STM32 HAL
+- [x] Analog pedal input measurement using ADC
+- [x] Pedal percentage conversion from 0% to 100%
+- [x] Dashboard LED brightness control using PWM
+- [x] CAN transmission and reception between two ECUs
+- [x] CAN timeout detection and fail-safe LED OFF behavior
+- [x] Automatic recovery after CAN communication is restored
+- [x] Non-blocking periodic processing using `HAL_GetTick()`
+- [x] CAN waveform, transmission period, and frame verified using a logic analyzer
+- [ ] Final integrated system demo
 
 ---
 
