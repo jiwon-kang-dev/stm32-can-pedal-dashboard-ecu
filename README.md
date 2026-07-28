@@ -88,11 +88,11 @@ flowchart LR
 
 ## CAN Message Specification
 
-The Pedal ECU reads the potentiometer through ADC, converts the measured value into a pedal percentage, and transmits it to the Dashboard ECU.
+The Pedal ECU reads the potentiometer value through ADC, converts it into a pedal position from 0% to 100%, and transmits the result to the Dashboard ECU through CAN.
 
 | Field | Specification |
 |---|---|
-| CAN format | Standard 11-bit identifier |
+| CAN frame type | Standard 11-bit identifier |
 | CAN ID | `0x100` |
 | Bitrate | 500 kbps |
 | DLC | 1 byte |
@@ -100,6 +100,7 @@ The Pedal ECU reads the potentiometer through ADC, converts the measured value i
 | Transmission period | 100 ms |
 | CAN TX pin | PB9 |
 | CAN RX pin | PB8 |
+| Timeout threshold | 1000 ms |
 
 ### Payload Example
 
@@ -107,6 +108,18 @@ The Pedal ECU reads the potentiometer through ADC, converts the measured value i
 Data[0] = 0x43
 0x43 = 67 decimal
 Pedal position = 67%
+```
+
+The Dashboard ECU receives CAN message `0x100`, checks whether the pedal value is within the valid range of 0 to 100, and converts the received value into PWM duty.
+
+The onboard LED brightness changes according to the received pedal position.
+
+If no valid pedal message is received for more than 1000 ms, the Dashboard ECU activates the fail-safe state and forces the PWM duty to zero.
+
+When a valid CAN message is received again, the fail-safe state is cleared and normal PWM control resumes.
+
+---
+
 ## Demo
 
 ### ADC Test
