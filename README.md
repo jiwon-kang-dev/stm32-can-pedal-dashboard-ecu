@@ -120,6 +120,23 @@ When a valid CAN message is received again, the fail-safe state is cleared and n
 
 ---
 
+## Verification Results
+
+| Test Item | Result |
+|---|---|
+| ADC pedal input | Potentiometer value successfully converted into a pedal position from 0% to 100% |
+| CAN transmission | Pedal ECU periodically transmitted CAN message `0x100` |
+| CAN reception | Dashboard ECU successfully received and validated the pedal data |
+| PWM control | Dashboard LD2 brightness changed according to the received pedal position |
+| Timeout detection | Communication loss detected after approximately 1000 ms |
+| Fail-safe behavior | PWM duty forced to zero and Dashboard LD2 turned off |
+| Communication recovery | Normal PWM control resumed after receiving a valid CAN message |
+| Transmission period | Logic analyzer measurement confirmed approximately 100 ms |
+| CAN frame decoding | CAN ID `0x100`, DLC `1`, and pedal payload successfully decoded |
+| TXD/RXD comparison | Matching CAN frame patterns observed between transmitter TXD and receiver RXD |
+
+---
+
 ## Demo
 
 ### ADC Test
