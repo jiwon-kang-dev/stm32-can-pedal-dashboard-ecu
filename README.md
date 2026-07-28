@@ -86,25 +86,27 @@ flowchart LR
 
 ---
 
-## CAN Communication Summary
+## CAN Message Specification
 
-The Pedal ECU reads the potentiometer value through ADC and converts it into a pedal percentage from 0 to 100%.
+The Pedal ECU reads the potentiometer through ADC, converts the measured value into a pedal percentage, and transmits it to the Dashboard ECU.
 
-The pedal percentage is transmitted through CAN using standard CAN ID `0x100`.
+| Field | Specification |
+|---|---|
+| CAN format | Standard 11-bit identifier |
+| CAN ID | `0x100` |
+| Bitrate | 500 kbps |
+| DLC | 1 byte |
+| `Data[0]` | Pedal position from `0` to `100` |
+| Transmission period | 100 ms |
+| CAN TX pin | PB9 |
+| CAN RX pin | PB8 |
+
+### Payload Example
 
 ```text
-CAN ID: 0x100
-DLC: 1 byte
-Data[0]: Pedal percentage, 0~100
-CAN1_TX: PB9
-CAN1_RX: PB8
-Bitrate: 500 kbps
-```
-
-The Dashboard ECU receives the CAN frame and prints the received pedal value through UART.
-
----
-
+Data[0] = 0x43
+0x43 = 67 decimal
+Pedal position = 67%
 ## Demo
 
 ### ADC Test
